@@ -15,4 +15,5 @@ mgr inż. Rafał
 
 You-Tube videos:
 
-https://www.youtube.com/playlist?list=PLQVrVMV_eksUtZ5TpGXbWvjNMwpURA7v_
+https://youtu.be/SVM2TcPMlDk
+https://youtu.be/AzWEXd_9Osg
