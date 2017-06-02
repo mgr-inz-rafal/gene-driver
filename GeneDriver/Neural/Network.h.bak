@@ -1,0 +1,128 @@
+#pragma once
+
+#include <vector>
+#include <list>
+#include <functional>
+#include <memory>
+#include <string>
+#include <random>
+#include <algorithm>
+
+static char global_neuron_id = 'A';
+static std::default_random_engine generator;
+static std::normal_distribution<double> distribution;	// Mean=0.0f	Std. deviation=1.0f
+
+class Neuron
+{
+	double output = 0.0f;
+protected:
+	char ID;
+public:
+	std::vector<double> inputs;
+	Neuron(int _number_of_inputs)
+	{
+		ID = global_neuron_id++;
+		inputs.resize(_number_of_inputs);
+		randomize_weights();
+	}
+	void randomize_weights()
+	{
+		std::for_each(inputs.begin(), inputs.end(), [&](auto& x) {x = distribution(generator);} );
+
+		int asd = 0;
+		++asd;
+	}
+
+	virtual double get_output() const
+	{
+		return output;
+	}
+	virtual std::string get_ID() const
+	{
+		return std::string(1, ID);
+	}
+};
+
+class Bias: public Neuron
+{
+public:
+	using Neuron::Neuron;
+	virtual double get_output() const
+	{
+		return 1.0f;
+	}
+	virtual std::string get_ID() const
+	{
+		return "B" + std::string(1, ID);
+	}
+};
+
+class Layer
+{
+public:
+	std::vector<std::shared_ptr<Neuron>> neurons;
+};
+
+class Network
+{
+public:
+	void build()
+	{
+		// Output layer
+		{
+			Layer l;
+			for(auto i = 0; i < outputs; ++i)
+			{
+				l.neurons.push_back(std::make_shared<Neuron>(hidden_layer_size + 1));	// +1 for Bias
+			}
+			layers.push_front(l);
+		}
+
+		// Hidden layers
+		{
+			for(auto i = 0; i < hidden_layers; ++i)
+			{
+				Layer l;
+				auto input_count = (i == hidden_layers - 1) ? inputs + 1 : hidden_layer_size + 1;
+				for(auto j = 0; j < hidden_layer_size; ++j)
+				{
+					l.neurons.push_back(std::make_shared<Neuron>(input_count));
+				}
+				l.neurons.push_back(std::make_shared<Bias>(input_count));
+				layers.push_front(l);
+			}
+		}
+
+		// Input layer
+		{
+			Layer l;
+			for(auto i = 0; i < inputs; ++i)
+			{
+				l.neurons.push_back(std::make_shared<Neuron>(0));
+			}
+			l.neurons.push_back(std::make_shared<Bias>(0));
+			layers.push_front(l);
+		}
+	}
+
+public:
+	std::function<double(double)> activation_function;
+	int inputs;
+	int outputs;
+	int hidden_layers;
+	int hidden_layer_size;
+	std::list<Layer> layers;
+	Network(
+		const std::function<double(double)>& _activation_function,
+		int _inputs,
+		int _outputs,
+		int _hidden_layers):
+			activation_function(_activation_function),
+			inputs(_inputs),
+			outputs(_outputs),
+			hidden_layers(_hidden_layers)
+	{
+		hidden_layer_size = static_cast<int>(std::ceil((inputs + outputs) / 2.0f));
+		build();
+	};
+};
