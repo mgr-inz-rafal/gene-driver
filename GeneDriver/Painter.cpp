@@ -45,20 +45,20 @@ void Painter::set_show_network(const bool show_network)
 
 Painter::Painter(const World& _world, const AllegroProxy& _al, const bool& _showcase): world(_world), al(_al), showcase(_showcase)
 {
-	dog = al.load_bitmap("../Resources/dog.png");
+	dog = al.load_bitmap("Resources/dog.png");
 	al_convert_mask_to_alpha(dog, al_map_rgb(255, 255, 255));
-	blood = al.load_bitmap("../Resources/blood.png");
+	blood = al.load_bitmap("Resources/blood.png");
 	al_convert_mask_to_alpha(blood, al_map_rgb(0, 0, 0));
-	car = al.load_bitmap("../Resources/car.png");
+	car = al.load_bitmap("Resources/car.png");
 	al_convert_mask_to_alpha(car, al_map_rgb(0, 0, 0));
-	cow = al.load_bitmap("../Resources/cow.png");
+	cow = al.load_bitmap("Resources/cow.png");
 	al_convert_mask_to_alpha(cow, al_map_rgb(0, 0, 0));
-	road = al.load_bitmap("../Resources/road.png");
+	road = al.load_bitmap("Resources/road.png");
 
-	font = al_load_ttf_font("../Resources/unispace.ttf", 16, 0);
+	font = al_load_ttf_font("Resources/unispace.ttf", 16, 0);
 	if(!font)
 	{
-		throw std::exception("al_load_ttf_font() failed");
+		throw std::runtime_error("al_load_ttf_font() failed");
 	}
 }
 

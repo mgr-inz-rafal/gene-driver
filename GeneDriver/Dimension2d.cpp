@@ -21,3 +21,16 @@
 
 #include "Dimension2d.h"
 
+// Do not simply compare two doubles. Allow small differences.
+template<>
+bool Dimension2d<double>::operator==(const Dimension2d<double>& rhs) const
+{
+	return 
+		(std::abs(this->_x - rhs._x) < DOUBLE_COMPARE_TOLERANCE) && 
+		(std::abs(this->_y - rhs._y) < DOUBLE_COMPARE_TOLERANCE);
+}
+template<>
+bool Dimension2d<double>::operator!=(const Dimension2d<double>& rhs) const
+{
+	return !Dimension2d<double>::operator==(rhs);
+}

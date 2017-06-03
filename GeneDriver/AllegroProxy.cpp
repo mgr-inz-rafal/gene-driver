@@ -60,10 +60,13 @@ void AllegroProxy::init_all()
 	{
 		throw std::runtime_error("al_init_image_addon() failed");
 	}
+	al_init_font_addon();
+	/*
 	if(!al_init_font_addon())
 	{
 		throw std::runtime_error("al_init_font_addon() failed");
 	}
+	*/
 	if(!al_init_ttf_addon())
 	{
 		throw std::runtime_error("al_init_ttf_addon() failed");
